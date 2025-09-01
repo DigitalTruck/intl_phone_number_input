@@ -134,10 +134,13 @@ class DirectionalCountryListTile extends StatelessWidget {
             '${country.dialCode ?? ''}',
             textDirection: TextDirection.ltr,
           ),
-          Text(
-            '${Utils.getCountryName(country, locale)}',
-            textDirection: Directionality.of(context),
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              '${Utils.getCountryName(country, locale)}',
+              textDirection: Directionality.of(context),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            ),
           ),
         ],
       ),

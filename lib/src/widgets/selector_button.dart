@@ -8,18 +8,6 @@ import 'package:intl_phone_number_input/src/widgets/item.dart';
 
 /// [SelectorButton]
 class SelectorButton extends StatelessWidget {
-  final List<Country> countries;
-  final Country? country;
-  final SelectorConfig selectorConfig;
-  final TextStyle? selectorTextStyle;
-  final InputDecoration? searchBoxDecoration;
-  final bool autoFocusSearchField;
-  final String? locale;
-  final bool isEnabled;
-  final bool isScrollControlled;
-
-  final ValueChanged<Country?> onCountryChanged;
-
   const SelectorButton({
     Key? key,
     required this.countries,
@@ -32,7 +20,20 @@ class SelectorButton extends StatelessWidget {
     required this.onCountryChanged,
     required this.isEnabled,
     required this.isScrollControlled,
+    required this.radioButtonColor,
   }) : super(key: key);
+
+  final List<Country> countries;
+  final Country? country;
+  final SelectorConfig selectorConfig;
+  final TextStyle? selectorTextStyle;
+  final InputDecoration? searchBoxDecoration;
+  final bool autoFocusSearchField;
+  final String? locale;
+  final bool isEnabled;
+  final bool isScrollControlled;
+  final Color radioButtonColor;
+  final ValueChanged<Country?> onCountryChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +73,18 @@ class SelectorButton extends StatelessWidget {
                     if (selectorConfig.selectorType ==
                         PhoneInputSelectorType.BOTTOM_SHEET) {
                       selected = await showCountrySelectorBottomSheet(
-                          context, countries, country);
+                        context,
+                        countries,
+                        country,
+                        radioButtonColor,
+                      );
                     } else {
                       selected = await showCountrySelectorDialog(
-                          context, countries, country);
+                        context,
+                        countries,
+                        country,
+                        radioButtonColor,
+                      );
                     }
 
                     if (selected != null) {
@@ -117,8 +126,11 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.DIALOG] is selected
-  Future<Country?> showCountrySelectorDialog(BuildContext inheritedContext,
-      List<Country> countries, Country? selectedCountry) {
+  Future<Country?> showCountrySelectorDialog(
+      BuildContext inheritedContext,
+      List<Country> countries,
+      Country? selectedCountry,
+      Color radioButtonColor) {
     return showDialog(
       context: inheritedContext,
       barrierDismissible: true,
@@ -129,7 +141,7 @@ class SelectorButton extends StatelessWidget {
             width: double.maxFinite,
             child: CountrySearchListWidget(
               countries: countries,
-              radioButtonColor: Colors.red,
+              radioButtonColor: radioButtonColor,
               selectedCountry: selectedCountry,
               locale: locale,
               searchBoxDecoration: searchBoxDecoration,
@@ -142,8 +154,11 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.BOTTOM_SHEET] is selected
-  Future<Country?> showCountrySelectorBottomSheet(BuildContext inheritedContext,
-      List<Country> countries, Country? selectedCountry) {
+  Future<Country?> showCountrySelectorBottomSheet(
+      BuildContext inheritedContext,
+      List<Country> countries,
+      Country? selectedCountry,
+      Color radioButtonColor) {
     return showModalBottomSheet(
       context: inheritedContext,
       clipBehavior: Clip.hardEdge,
@@ -181,7 +196,7 @@ class SelectorButton extends StatelessWidget {
                       scrollController: controller,
                       autoFocus: autoFocusSearchField,
                       countries: countries,
-                      radioButtonColor: Colors.red,
+                      radioButtonColor: radioButtonColor,
                       selectedCountry: selectedCountry,
                     ),
                   ),
