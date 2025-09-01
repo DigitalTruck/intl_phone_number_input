@@ -72,10 +72,10 @@ class SelectorButton extends StatelessWidget {
                     if (selectorConfig.selectorType ==
                         PhoneInputSelectorType.BOTTOM_SHEET) {
                       selected = await showCountrySelectorBottomSheet(
-                          context, countries);
+                          context, countries, country);
                     } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
+                      selected = await showCountrySelectorDialog(
+                          context, countries, country);
                     }
 
                     if (selected != null) {
@@ -117,8 +117,8 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.DIALOG] is selected
-  Future<Country?> showCountrySelectorDialog(
-      BuildContext inheritedContext, List<Country> countries) {
+  Future<Country?> showCountrySelectorDialog(BuildContext inheritedContext,
+      List<Country> countries, Country? selectedCountry) {
     return showDialog(
       context: inheritedContext,
       barrierDismissible: true,
@@ -128,11 +128,11 @@ class SelectorButton extends StatelessWidget {
           child: Container(
             width: double.maxFinite,
             child: CountrySearchListWidget(
-              countries,
-              locale,
+              countries: countries,
+              radioButtonColor: Colors.red,
+              selectedCountry: selectedCountry,
+              locale: locale,
               searchBoxDecoration: searchBoxDecoration,
-              showFlags: selectorConfig.showFlags,
-              useEmoji: selectorConfig.useEmoji,
               autoFocus: autoFocusSearchField,
             ),
           ),
@@ -142,8 +142,8 @@ class SelectorButton extends StatelessWidget {
   }
 
   /// shows a Dialog with list [countries] if the [PhoneInputSelectorType.BOTTOM_SHEET] is selected
-  Future<Country?> showCountrySelectorBottomSheet(
-      BuildContext inheritedContext, List<Country> countries) {
+  Future<Country?> showCountrySelectorBottomSheet(BuildContext inheritedContext,
+      List<Country> countries, Country? selectedCountry) {
     return showModalBottomSheet(
       context: inheritedContext,
       clipBehavior: Clip.hardEdge,
@@ -176,13 +176,13 @@ class SelectorButton extends StatelessWidget {
                       ),
                     ),
                     child: CountrySearchListWidget(
-                      countries,
-                      locale,
+                      locale: locale,
                       searchBoxDecoration: searchBoxDecoration,
                       scrollController: controller,
-                      showFlags: selectorConfig.showFlags,
-                      useEmoji: selectorConfig.useEmoji,
                       autoFocus: autoFocusSearchField,
+                      countries: countries,
+                      radioButtonColor: Colors.red,
+                      selectedCountry: selectedCountry,
                     ),
                   ),
                 );
