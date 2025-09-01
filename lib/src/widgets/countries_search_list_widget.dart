@@ -152,18 +152,20 @@ class DirectionalCountryListTile extends StatelessWidget {
       leading: (showFlags ? _Flag(country: country, useEmoji: useEmoji) : null),
       title: Align(
         alignment: AlignmentDirectional.centerStart,
-        child: Text(
-          '${Utils.getCountryName(country, locale)}',
-          textDirection: Directionality.of(context),
-          textAlign: TextAlign.start,
-        ),
-      ),
-      subtitle: Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Text(
-          '${country.dialCode ?? ''}',
-          textDirection: TextDirection.ltr,
-          textAlign: TextAlign.start,
+        child: Row(
+          spacing: 10,
+          children: [
+            Text(
+              '${country.dialCode ?? ''}',
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.start,
+            ),
+            Text(
+              '${Utils.getCountryName(country, locale)}',
+              textDirection: Directionality.of(context),
+              textAlign: TextAlign.start,
+            ),
+          ],
         ),
       ),
       onTap: () => Navigator.of(context).pop(country),
@@ -187,10 +189,16 @@ class _Flag extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineSmall,
                   )
                 : country?.flagUri != null
-                    ? CircleAvatar(
-                        backgroundImage: AssetImage(
-                          country!.flagUri,
-                          package: 'intl_phone_number_input',
+                    ? Container(
+                        height: 16,
+                        width: 23,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              country!.flagUri,
+                              package: 'intl_phone_number_input',
+                            ),
+                          ),
                         ),
                       )
                     : SizedBox.shrink(),
